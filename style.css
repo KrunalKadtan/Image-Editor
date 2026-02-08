@@ -63,7 +63,7 @@ main section .top {
 main section .bottom {
   background-color: var(--bg-secondary-color);
   width: 100%;
-  padding: var(--pd-2xl);
+  padding: var(--pd-lg);
   aspect-ratio: 5.25/3;
   border-radius: var(--border-radius-xl);
   display: flex;
@@ -128,4 +128,10 @@ main section .right .filter input::-webkit-slider-thumb {
   border-radius: 50%;
   background-color: #f00;
   margin-top: -8.5px;
+}
+
+canvas {
+  display: none;
+  max-width: 90%;
+  max-height: 65vh;
 }

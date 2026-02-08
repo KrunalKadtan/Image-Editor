@@ -55,12 +55,16 @@ const filters = {
   },
 }
 
+const imageCanvas = document.querySelector('#image-canvas');
+const imgInput = document.querySelector('#image-input');
+const canvasCtx = imageCanvas.getContext('2d');
+
 const filtersContainer = document.querySelector('.filters');
 
 function createFilterElement(name, unit = "%", value, min, max) {
   const div = document.createElement('div');
   div.classList.add('filter');
-  
+
   const input = document.createElement('input');
   input.type = "range";
   input.min = min;
@@ -81,4 +85,21 @@ Object.keys(filters).forEach(filter => {
   const filterElement = createFilterElement(filter, filters[filter].unit, filters[filter].value, filters[filter].min, filters[filter].max);
 
   filtersContainer.appendChild(filterElement);
+})
+
+imgInput.addEventListener('change', event => {
+  
+  const file = event.target.files[0];
+  const imagePlaceholder = document.querySelector('.placeholder');
+  imagePlaceholder.style.display = 'none';
+  imageCanvas.style.display = 'initial';
+
+  const img = new Image();
+  img.src = URL.createObjectURL(file);
+
+  img.onload = () => {
+    imageCanvas.width = img.width;
+    imageCanvas.height = img.height;
+    canvasCtx.drawImage(img, 0, 0);
+  }
 })
