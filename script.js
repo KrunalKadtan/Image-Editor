@@ -53,6 +53,7 @@ const imageCanvas = document.querySelector('#image-canvas');
 const imgInput = document.querySelector('#image-input');
 const canvasCtx = imageCanvas.getContext('2d');
 const resetButton = document.querySelector('#reset-btn');
+const downloadButton = document.querySelector('#download-btn');
 let file = null;
 let image = null;
 
@@ -127,7 +128,7 @@ function applyFilters() {
   canvasCtx.drawImage(image, 0, 0);
 }
 
-resetButton.addEventListener('click', event => {
+resetButton.addEventListener('click', () => {
   filters = {
     brightness: {
       value: 100,
@@ -182,4 +183,11 @@ resetButton.addEventListener('click', event => {
   applyFilters();
   filtersContainer.innerHTML = "";
   createFilters();
+})
+
+downloadButton.addEventListener('click', () => {
+  const link = document.createElement('a');
+  link.download = "edited-image.png";
+  link.href = imageCanvas.toDataURL();
+  link.click();
 })
