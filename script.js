@@ -11,12 +11,6 @@ const filters = {
     max: 200,
     unit: "%",
   },
-  exposure: {
-    value: 100,
-    min: 0,
-    max: 200,
-    unit: "%"
-  },
   saturation: {
     value: 100,
     min: 0,
@@ -42,7 +36,7 @@ const filters = {
     unit: "%",
   },
   opacity: {
-    value: 0,
+    value: 100,
     min: 0,
     max: 100,
     unit: "%",
@@ -58,6 +52,8 @@ const filters = {
 const imageCanvas = document.querySelector('#image-canvas');
 const imgInput = document.querySelector('#image-input');
 const canvasCtx = imageCanvas.getContext('2d');
+let file = null;
+let image = null;
 
 const filtersContainer = document.querySelector('.filters');
 
@@ -78,6 +74,11 @@ function createFilterElement(name, unit = "%", value, min, max) {
   div.appendChild(p);
   div.appendChild(input);
 
+  input.addEventListener('input', event => {
+    filters[name].value = input.value;
+    applyFilters();
+  })
+
   return div;
 }
 
@@ -89,7 +90,7 @@ Object.keys(filters).forEach(filter => {
 
 imgInput.addEventListener('change', event => {
   
-  const file = event.target.files[0];
+  file = event.target.files[0];
   const imagePlaceholder = document.querySelector('.placeholder');
   imagePlaceholder.style.display = 'none';
   imageCanvas.style.display = 'initial';
@@ -98,8 +99,25 @@ imgInput.addEventListener('change', event => {
   img.src = URL.createObjectURL(file);
 
   img.onload = () => {
+    image = img;
     imageCanvas.width = img.width;
     imageCanvas.height = img.height;
     canvasCtx.drawImage(img, 0, 0);
   }
 })
+
+function applyFilters() {
+  canvasCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+  canvasCtx.filter = `
+  brightness(${filters.brightness.value}${filters.brightness.unit})
+  contrast(${filters.contrast.value}${filters.contrast.unit})
+  saturate(${filters.saturation.value}${filters.saturation.unit})
+  hue-rotate(${filters.hueRotation.value}${filters.hueRotation.unit})
+  blur(${filters.blur.value}${filters.blur.unit})
+  grayscale(${filters.grascale.value}${filters.grascale.unit})
+  opacity(${filters.opacity.value}${filters.opacity.unit
+})
+  invert(${filters.invert.value}${filters.invert.unit})
+  `.trim();
+  canvasCtx.drawImage(image, 0, 0);
+}
