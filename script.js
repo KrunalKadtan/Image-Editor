@@ -29,7 +29,7 @@ const filters = {
     max: 20,
     unit: "px",
   },
-  grascale: {
+  grayscale: {
     value: 0,
     min: 0,
     max: 100,
@@ -114,7 +114,7 @@ function applyFilters() {
   saturate(${filters.saturation.value}${filters.saturation.unit})
   hue-rotate(${filters.hueRotation.value}${filters.hueRotation.unit})
   blur(${filters.blur.value}${filters.blur.unit})
-  grayscale(${filters.grascale.value}${filters.grascale.unit})
+  grayscale(${filters.grayscale.value}${filters.grayscale.unit})
   opacity(${filters.opacity.value}${filters.opacity.unit
 })
   invert(${filters.invert.value}${filters.invert.unit})
