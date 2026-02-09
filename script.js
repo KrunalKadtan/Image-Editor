@@ -1,4 +1,4 @@
-const filters = {
+let filters = {
   brightness: {
     value: 100,
     min: 0,
@@ -52,6 +52,7 @@ const filters = {
 const imageCanvas = document.querySelector('#image-canvas');
 const imgInput = document.querySelector('#image-input');
 const canvasCtx = imageCanvas.getContext('2d');
+const resetButton = document.querySelector('#reset-btn');
 let file = null;
 let image = null;
 
@@ -82,11 +83,15 @@ function createFilterElement(name, unit = "%", value, min, max) {
   return div;
 }
 
-Object.keys(filters).forEach(filter => {
-  const filterElement = createFilterElement(filter, filters[filter].unit, filters[filter].value, filters[filter].min, filters[filter].max);
+function createFilters() {
+  Object.keys(filters).forEach(filter => {
+    const filterElement = createFilterElement(filter, filters[filter].unit, filters[filter].value, filters[filter].min, filters[filter].max);
 
-  filtersContainer.appendChild(filterElement);
-})
+    filtersContainer.appendChild(filterElement);
+  })
+}
+
+createFilters();
 
 imgInput.addEventListener('change', event => {
   
@@ -121,3 +126,60 @@ function applyFilters() {
   `.trim();
   canvasCtx.drawImage(image, 0, 0);
 }
+
+resetButton.addEventListener('click', event => {
+  filters = {
+    brightness: {
+      value: 100,
+      min: 0,
+      max: 200,
+      unit: "%",
+    },
+    contrast: {
+      value: 100,
+      min: 0,
+      max: 200,
+      unit: "%",
+    },
+    saturation: {
+      value: 100,
+      min: 0,
+      max: 200,
+      unit: "%"
+    },
+    hueRotation: {
+      value: 0,
+      min: 0,
+      max: 360,
+      unit: "deg"
+    },
+    blur: {
+      value: 0,
+      min: 0,
+      max: 20,
+      unit: "px",
+    },
+    grayscale: {
+      value: 0,
+      min: 0,
+      max: 100,
+      unit: "%",
+    },
+    opacity: {
+      value: 100,
+      min: 0,
+      max: 100,
+      unit: "%",
+    },
+    invert: {
+      value: 0,
+      min: 0,
+      max: 100,
+      unit: "%",
+    },
+  }
+
+  applyFilters();
+  filtersContainer.innerHTML = "";
+  createFilters();
+})
